@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 45.0242 45.0242" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic:round-place">
+<path id="Vector" d="M22.5121 3.75201C14.6329 3.75201 7.50403 9.79275 7.50403 19.1353C7.50403 25.101 12.1002 32.1172 21.2739 40.2028C21.9868 40.8219 23.0561 40.8219 23.769 40.2028C32.9239 32.1172 37.5201 25.101 37.5201 19.1353C37.5201 9.79275 30.3913 3.75201 22.5121 3.75201ZM22.5121 22.5121C20.4485 22.5121 18.7601 20.8237 18.7601 18.7601C18.7601 16.6965 20.4485 15.0081 22.5121 15.0081C24.5757 15.0081 26.2641 16.6965 26.2641 18.7601C26.2641 20.8237 24.5757 22.5121 22.5121 22.5121Z" fill="url(#paint0_linear_45_50)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_45_50" x1="22.5121" y1="3.75201" x2="22.5121" y2="40.6671" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FEB226"/>
+<stop offset="1" stop-color="#FF7227"/>
+</linearGradient>
+</defs>
+</svg>
