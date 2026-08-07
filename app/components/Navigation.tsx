@@ -81,7 +81,7 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed right-[20px] md:right-[60px] top-1/2 -translate-y-1/2 z-50 transition-opacity duration-300 ${
+      className={`fixed right-[60px] top-1/2 -translate-y-1/2 z-50 transition-opacity duration-300 ${
         isScrolling ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >

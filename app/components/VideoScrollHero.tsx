@@ -129,8 +129,8 @@ export default function VideoScrollHero() {
         className="sticky top-0 w-full h-screen bg-black flex flex-col items-center justify-center overflow-hidden z-20"
         style={{ position: "sticky", top: 0 }}
       >
-        {/* Responsive Video Container: 92vw/60vh on mobile, 70vw/70vh on desktop */}
-        <div className="relative w-[92vw] sm:w-[85vw] md:w-[75vw] lg:w-[70vw] h-[60vh] sm:h-[65vh] md:h-[70vh] max-w-[1400px] max-h-[850px] rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.9)] border border-white/10 flex items-center justify-center bg-black">
+        {/* Video Container: 90% width of layout for large clear display */}
+        <div className="relative w-[90%] md:w-[70vw] h-[75vh] md:h-[70vh] max-w-[1400px] max-h-[850px] rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.9)] border border-white/10 flex items-center justify-center bg-black">
           {/* Hidden video element used as frame source */}
           <video
             ref={videoRef}

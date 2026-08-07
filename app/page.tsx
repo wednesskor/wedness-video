@@ -9,7 +9,7 @@ import Navigation from "./components/Navigation";
 
 export default function Home() {
   return (
-    <main className="w-full md:min-w-[1400px] max-w-[1920px] mx-auto relative">
+    <main className="w-full min-w-[1400px] max-w-[1920px] mx-auto relative">
       <VideoScrollHero />
       <Navigation />
       <HeroSection />
