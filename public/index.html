@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WEDNESS · 국내 최초 프리미엄 VR 웨딩 촬영</title>
+  <meta name="description" content="당신의 결혼식, 그 날의 분위기를 언제든 다시 느껴보세요. WEDNESS는 웨딩 예식을 360도 VR로 정교하게 기록하여, 시간이 지나도 변함없이 그날의 감동을 다시 경험할 수 있도록 합니다." />
+  <meta name="theme-color" content="#fbf7f2" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <!-- ============ Header ============ -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a href="#top" class="logo" aria-label="WEDNESS 홈">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" /><ellipse cx="16" cy="16" rx="6" ry="13" /><path d="M3 16h26" /></svg>
+        </span>
+        WEDNESS
+      </a>
+      <nav class="nav" aria-label="주요 메뉴">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">
+          <span class="sr-only">메뉴 열기</span>
+          <span></span><span></span>
+        </button>
+        <ul id="nav-list">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#why">Why VR</a></li>
+          <li><a href="#benefits">Benefits</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#contact" class="nav-cta">촬영 문의</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ Hero ============ -->
+    <section class="hero">
+      <div class="petals" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow reveal">Premium VR Wedding Film</p>
+          <h1 class="hero-title reveal">
+            <span class="hero-sub">국내 최초 프리미엄 VR 웨딩 촬영</span>
+            당신의 결혼식,<br />
+            그 날의 분위기를<br />
+            <em>언제든 다시</em> 느껴보세요.
+          </h1>
+          <p class="hero-lead reveal">
+            사진과 영상으로는 담을 수 없던 공기와 설렘, 사람들의 미소까지.
+            WEDNESS가 당신의 예식을 360도로 기록합니다.
+          </p>
+          <div class="hero-actions reveal">
+            <a href="#contact" class="btn btn-primary">촬영 문의하기</a>
+            <a href="#about" class="btn btn-ghost">서비스 알아보기</a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal" aria-hidden="true">
+          <div class="orb">
+            <svg class="orb-text" viewBox="0 0 400 400">
+              <defs>
+                <path id="circlePath" d="M200,200 m-172,0 a172,172 0 1,1 344,0 a172,172 0 1,1 -344,0" />
+              </defs>
+              <text>
+                <textPath href="#circlePath">WEDNESS · PREMIUM VR WEDDING · EVERY MOMENT IN 360° · FOREVER ·</textPath>
+              </text>
+            </svg>
+            <svg class="orb-globe" viewBox="0 0 300 300">
+              <circle cx="150" cy="150" r="118" class="g-outer" />
+              <ellipse cx="150" cy="150" rx="118" ry="40" />
+              <ellipse cx="150" cy="150" rx="118" ry="84" class="g-faint" />
+              <line x1="32" y1="150" x2="268" y2="150" class="g-faint" />
+              <ellipse cx="150" cy="150" rx="84" ry="118" class="g-spin s1" />
+              <ellipse cx="150" cy="150" rx="40" ry="118" class="g-spin s2" />
+              <ellipse cx="150" cy="150" rx="104" ry="118" class="g-spin s3" />
+            </svg>
+            <div class="orb-center">
+              <span class="orb-deg">360°</span>
+              <span class="orb-label">Wedding, Relived</span>
+            </div>
+            <span class="orb-dot d1"></span>
+            <span class="orb-dot d2"></span>
+          </div>
+        </div>
+      </div>
+
+      <a href="#about" class="scroll-hint">
+        <span>Scroll</span>
+        <i aria-hidden="true"></i>
+      </a>
+    </section>
+
+    <!-- ============ About ============ -->
+    <section class="section about" id="about">
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow reveal">About Us</p>
+          <h2 class="section-title reveal">국내 최초 프리미엄<br />VR 웨딩 촬영 서비스</h2>
+          <div class="ornament reveal" aria-hidden="true"><span></span><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.7 1.2 5.3 3.2 1.6-2 3.1-3.2 5.3-3.2 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg><span></span></div>
+          <p class="section-lead reveal">
+            Wedness는 웨딩 예식을 <strong>360도 VR로 정교하게 기록</strong>하여,<br class="br-md" />
+            시간이 지나도 변함없이 그날의 감동을 다시 경험할 수 있도록 합니다.
+          </p>
+        </div>
+
+        <ul class="feature-grid">
+          <li class="feature reveal">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><rect x="6" y="14" width="26" height="20" rx="3"/><path d="M32 21l10-5v16l-10-5"/><circle cx="14" cy="10" r="3"/><circle cx="24" cy="10" r="3"/></svg>
+            </span>
+            <h3>One-Stop 제작</h3>
+            <p>촬영부터 편집, 최종 납품까지 전 과정을 자체 운영합니다.</p>
+          </li>
+          <li class="feature reveal">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><path d="M8 40V18l16-10 16 10v22"/><path d="M18 40V28h12v12"/><path d="M4 40h40"/><path d="M24 8v-4"/></svg>
+            </span>
+            <h3>웨딩홀 맞춤 시나리오</h3>
+            <p>웨딩홀 환경에 특화된 VR 촬영 시나리오를 설계합니다.</p>
+          </li>
+          <li class="feature reveal">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><circle cx="17" cy="16" r="6"/><circle cx="33" cy="18" r="5"/><path d="M5 38c0-7 5.4-12 12-12s12 5 12 12"/><path d="M29 27.5c1.2-.3 2.6-.5 4-.5 5.5 0 10 4 10 10"/></svg>
+            </span>
+            <h3>전문 촬영팀 상주</h3>
+            <p>예식 당일 VR 전문 촬영팀이 현장에 상주합니다.</p>
+          </li>
+          <li class="feature reveal">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><rect x="4" y="16" width="26" height="14" rx="6"/><circle cx="12" cy="23" r="2.5"/><circle cx="22" cy="23" r="2.5"/><rect x="34" y="10" width="11" height="28" rx="2.5"/><path d="M38 34h3"/></svg>
+            </span>
+            <h3>멀티 플랫폼 제공</h3>
+            <p>VR · 모바일 · 유튜브용 영상을 동시에 제공합니다.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ Quote band ============ -->
+    <section class="quote-band" aria-label="WEDNESS의 약속">
+      <div class="container">
+        <p class="quote reveal">
+          <span class="quote-en">“A day you can step back into.”</span>
+          단 한 번의 예식을, 평생 체험할 수 있는 특별한 기록으로.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ Why ============ -->
+    <section class="section why" id="why">
+      <div class="container why-inner">
+        <div class="why-copy">
+          <p class="eyebrow reveal">Why VR Wedding?</p>
+          <h2 class="section-title reveal">왜 VR 웨딩인가요?</h2>
+          <p class="reveal">
+            VR 웨딩은 이미 <strong>글로벌 웨딩 트렌드</strong>이지만
+            국내에는 전문적으로 제공하는 기업이 없습니다.
+          </p>
+          <p class="reveal">
+            Wedness는 웨딩의 본질인 <strong>순간의 감동과 분위기</strong>를
+            가장 생생하게 기록하는 새로운 기준을 제시합니다.
+          </p>
+        </div>
+
+        <figure class="chart-card reveal">
+          <figcaption>
+            <span class="chart-kicker">Global Market</span>
+            전 세계 디지털 VR/AR/MR 시장 규모
+            <span class="chart-unit">단위: 억 달러</span>
+          </figcaption>
+          <div class="chart" role="img" aria-label="전 세계 디지털 VR/AR/MR 시장 규모: 2020년 16.5억 달러, 2024년 40.4억 달러, 2029년 예상 62.0억 달러">
+            <div class="bar-col">
+              <span class="bar-value">16.5</span>
+              <span class="bar" style="--h: 26.6%"></span>
+              <span class="bar-year">2020</span>
+            </div>
+            <div class="bar-col">
+              <span class="bar-value">40.4</span>
+              <span class="bar" style="--h: 65.2%"></span>
+              <span class="bar-year">2024</span>
+            </div>
+            <div class="bar-col forecast">
+              <span class="bar-value">62.0</span>
+              <span class="bar" style="--h: 100%"></span>
+              <span class="bar-year">2029 <small>예상</small></span>
+            </div>
+          </div>
+          <p class="chart-note"><strong>약 3.8배</strong> 성장 전망 <span>2020 → 2029</span></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ Benefits ============ -->
+    <section class="section benefits" id="benefits">
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow reveal">Benefits</p>
+          <h2 class="section-title reveal">WEDNESS만의<br />차별화된 혜택</h2>
+        </div>
+
+        <div class="tabs reveal" role="tablist" aria-label="혜택 대상 선택">
+          <button role="tab" id="tab-couple" aria-controls="panel-couple" aria-selected="true">고객 혜택</button>
+          <button role="tab" id="tab-hall" aria-controls="panel-hall" aria-selected="false" tabindex="-1">웨딩홀 혜택</button>
+          <span class="tab-indicator" aria-hidden="true"></span>
+        </div>
+
+        <div class="tab-panel" id="panel-couple" role="tabpanel" aria-labelledby="tab-couple">
+          <p class="panel-lead">
+            고객을 위한 혜택, 오직 Wedness에서만 가능합니다.<br class="br-md" />
+            단 한 번의 예식을 평생 체험할 수 있는 특별한 기록으로 남겨드립니다.
+          </p>
+          <ul class="benefit-grid">
+            <li class="benefit">
+              <span class="benefit-no">01</span>
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 40s-14-8.6-17.4-17C4.4 16.6 8.4 9 15 9c4 0 6.8 2.2 9 5.6C26.2 11.2 29 9 33 9c6.6 0 10.6 7.6 8.4 14C38 31.4 24 40 24 40z"/><path d="M24 20v8M20 24h8"/></svg></span>
+              <h3>평생 되살아나는 결혼식의 감동</h3>
+              <p>사진·영상으로는 담을 수 없던 공기, 분위기, 사람들의 반응까지 그대로 기록됩니다.</p>
+            </li>
+            <li class="benefit">
+              <span class="benefit-no">02</span>
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><ellipse cx="24" cy="24" rx="7" ry="17"/><path d="M7 24h34M10 15h28M10 33h28"/></svg></span>
+              <h3>참석하지 못한 지인을 위한 최고의 경험</h3>
+              <p>해외에 있거나 참석이 어려운 가족·친지도 예식 현장에 있는 듯한 감동을 경험합니다.</p>
+            </li>
+            <li class="benefit">
+              <span class="benefit-no">03</span>
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="7" y="19" width="34" height="22" rx="2"/><path d="M4 13h40v6H4zM24 13v28"/><path d="M24 13c-3-6-11-7-11-2 0 3 6 2 11 2zM24 13c3-6 11-7 11-2 0 3-6 2-11 2z"/></svg></span>
+              <h3>미래의 자녀에게 남기는 최고의 선물</h3>
+              <p>부모님의 결혼식을 VR로 직접 ‘체험’하는 특별한 추억을 남깁니다.</p>
+            </li>
+            <li class="benefit">
+              <span class="benefit-no">04</span>
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="36" cy="11" r="5"/><circle cx="12" cy="24" r="5"/><circle cx="36" cy="37" r="5"/><path d="M16.5 21.5l15-8M16.5 26.5l15 8"/></svg></span>
+              <h3>손쉬운 공유, 확장되는 추억</h3>
+              <p>유튜브 업로드가 가능한 영상 포맷으로 제공되어 언제든 쉽게 공유할 수 있습니다.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-panel" id="panel-hall" role="tabpanel" aria-labelledby="tab-hall" hidden>
+          <p class="panel-lead">
+            웨딩홀을 위한 혜택, 오직 Wedness와의 제휴로만 가능합니다.<br class="br-md" />
+            프리미엄 VR 웨딩 서비스로 브랜드 가치부터 매출 성과까지 함께 높입니다.
+          </p>
+          <ul class="benefit-grid">
+            <li class="benefit">
+              <span class="benefit-no">01</span>
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 18l8 8 8-14 8 14 8-8-4 20H12z"/><path d="M12 42h24"/></svg></span>
+              <h3>브랜드 가치를 높이는 프리미엄 서비스</h3>
+              <p>VR 웨딩 촬영 기본 제공만으로도 웨딩홀의 경쟁력과 차별화된 이미지를 완성합니다.</p>
+            </li>
+            <li class="benefit">
+              <span class="benefit-no">02</span>
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 20v8h6l14 9V11L12 20z"/><path d="M33 17c2 2 3 4.5 3 7s-1 5-3 7M38 12c3.5 3.2 5 7.4 5 12s-1.5 8.8-5 12"/></svg></span>
+              <h3>자연스럽게 확산되는 바이럴 효과</h3>
+              <p>고객이 영상을 SNS·유튜브에 공유할 때 웨딩홀의 이름과 공간이 자연스러운 홍보 자산으로 남습니다.</p>
+            </li>
+            <li class="benefit">
+              <span class="benefit-no">03</span>
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 5l4.8 11.6L41 18l-9.3 8 2.9 12.4L24 32l-10.6 6.4L16.3 26 7 18l12.2-1.4z"/></svg></span>
+              <h3>강력한 고객 유치 콘텐츠</h3>
+              <p>몰입형 VR 웨딩 경험은 예비부부의 감성과 호기심을 자극해 웨딩홀 선택의 중요한 기준이 됩니다.</p>
+            </li>
+            <li class="benefit">
+              <span class="benefit-no">04</span>
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 5l16 6v12c0 9.5-6.8 17-16 20-9.2-3-16-10.5-16-20V11z"/><path d="M17 24l5 5 9-10"/></svg></span>
+              <h3>운영 부담 없이 제공 가능한 서비스</h3>
+              <p>촬영, 인력 관리, 후반 편집, 최종 납품까지 모든 과정은 Wedness가 책임지고 운영합니다.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Process ============ -->
+    <section class="section process" id="process">
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow reveal">Our Process</p>
+          <h2 class="section-title reveal">운영 방식</h2>
+          <p class="section-lead reveal">
+            Wedness는 사전 면담부터 납품까지 전 과정을 자체 운영합니다.<br class="br-md" />
+            웨딩홀과 고객 모두가 안심할 수 있는 체계적인 프로세스를 제공합니다.
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step-no">01</span>
+            <h3>사전 면담 진행</h3>
+            <p>VR 웨딩 영상 서비스 소개 및 당일 동선 점검</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-no">02</span>
+            <h3>예식 당일 전문 촬영팀 상주</h3>
+            <p>360도 VR 촬영을 기반으로 예식 전 과정을 정교하게 기록합니다.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-no">03</span>
+            <h3>후반 제작 및 편집</h3>
+            <p>예식의 감정과 흐름을 고려한 프리미엄 VR 영상으로 완성합니다.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-no">04</span>
+            <h3>최종본 납품</h3>
+            <p>모바일·유튜브용으로 사용 가능한 포맷으로 VR 영상을 제공합니다.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ QR Trees ============ -->
+    <!-- data-url: QR에 담을 주소 / data-season: spring | summer | autumn / data-color(봄 나무 색): pink | red -->
+    <section class="section qr-trees" id="qr">
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow reveal">Scan the Moment</p>
+          <h2 class="section-title reveal">나무를 눌러<br />QR 코드를 만나보세요</h2>
+        </div>
+
+        <ul class="qr-grid">
+          <li class="qr-card reveal">
+            <div class="qr-frame" data-url="https://www.wedness.co.kr" data-season="spring" data-color="pink"></div>
+            <h3>Wedness 공식 홈페이지</h3>
+          </li>
+          <li class="qr-card reveal">
+            <div class="qr-frame" data-url="https://open.kakao.com/o/s90yjiOi" data-season="spring" data-color="red"></div>
+            <h3>카카오톡 오픈채팅방</h3>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ Contact ============ -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="contact-card">
+          <div class="contact-copy">
+            <p class="eyebrow reveal">Contact Us</p>
+            <h2 class="section-title reveal">웨딩의 새로운 기준,<br />WEDNESS와 함께하세요.</h2>
+            <p class="reveal">
+              궁금하신 점이나 제휴 및 촬영 문의는 정보를 남겨주시면
+              담당자가 빠르게 확인 후 연락드리겠습니다.
+            </p>
+            <div class="contact-ornament" aria-hidden="true">
+              <svg viewBox="0 0 120 60"><circle cx="45" cy="30" r="22"/><circle cx="75" cy="30" r="22"/></svg>
+            </div>
+          </div>
+
+          <form class="contact-form reveal" id="contact-form" novalidate>
+            <div class="field">
+              <label for="f-name">성함</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="f-hall">웨딩홀명</label>
+              <input id="f-hall" name="weddingHall" type="text" required />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-phone">연락처</label>
+                <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
+              </div>
+              <div class="field">
+                <label for="f-email">이메일</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" required />
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-message">문의 내용</label>
+              <textarea id="f-message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" disabled>문의 보내기</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="#top" class="logo">WEDNESS</a>
+      <p>국내 최초 프리미엄 VR 웨딩 촬영</p>
+      <p class="copyright">© <span id="year">2026</span> WEDNESS. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
