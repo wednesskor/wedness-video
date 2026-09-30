@@ -95,20 +95,51 @@ const CONTACT_ENDPOINT = '/api/contact';
   const form = document.getElementById('contact-form');
   const submit = form.querySelector('button[type="submit"]');
   const status = form.querySelector('.form-status');
-  const fields = Array.from(form.querySelectorAll('input, textarea'));
-  const isComplete = () => fields.every((f) => f.value.trim() !== '');
+  const hall = form.elements.weddingHall;
+  const TYPE_LABELS = { couple: '예비부부 촬영 문의', hall: '웨딩홀 제휴 문의' };
+  const val = (name) => form.elements[name].value.trim();
+  const isComplete = () =>
+    Array.from(form.querySelectorAll('[required]')).every((f) =>
+      f.type === 'checkbox' ? f.checked : f.value.trim() !== '');
   const setStatus = (type, msg) => {
     status.className = 'form-status' + (type ? ' ' + type : '');
     status.textContent = msg;
   };
 
+  // 문의 유형에 따라 웨딩홀명 필수 여부와 예식일 필드 표시를 전환
+  const applyType = () => {
+    const type = val('inquiryType');
+    form.querySelectorAll('[data-for]').forEach((el) => { el.hidden = el.dataset.for !== type; });
+    hall.required = type === 'hall';
+    hall.placeholder = type === 'hall' ? '' : '미정이면 비워두세요';
+    submit.disabled = !isComplete();
+  };
+  applyType();
+
   form.addEventListener('input', () => { submit.disabled = !isComplete(); });
+  form.addEventListener('change', (e) => {
+    if (e.target.name === 'inquiryType') applyType();
+    submit.disabled = !isComplete();
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!isComplete()) return;
 
-    const payload = Object.fromEntries(fields.map((f) => [f.name, f.value.trim()]));
+    // 백엔드 스키마는 그대로 두고, 추가 항목은 문의 내용 머리말로 전달
+    const type = val('inquiryType');
+    const header = [
+      '[문의 유형] ' + TYPE_LABELS[type],
+      type === 'couple' ? '[예식 예정일] ' + (val('weddingDate') || '미정') : null,
+      '[개인정보 수집·이용 동의] 동의 (' + new Date().toLocaleString('ko-KR') + ')',
+    ].filter(Boolean).join('\n');
+    const payload = {
+      name: val('name'),
+      weddingHall: val('weddingHall') || '미정',
+      phone: val('phone'),
+      email: val('email'),
+      message: header + '\n\n' + val('message'),
+    };
     submit.disabled = true;
     submit.textContent = '전송 중...';
     setStatus(null, '');
@@ -123,6 +154,7 @@ const CONTACT_ENDPOINT = '/api/contact';
       if (res.ok) {
         setStatus('success', '문의가 성공적으로 전송되었습니다. 담당자가 곧 연락드리겠습니다.');
         form.reset();
+        applyType();
       } else {
         setStatus('error', data.error || '전송 중 오류가 발생했습니다.');
       }
