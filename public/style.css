@@ -138,25 +138,57 @@ strong { font-weight: 600; color: var(--rose-deep); }
   letter-spacing: -0.01em;
   border: 1px solid transparent;
   cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease), color .35s var(--ease);
 }
-.btn-primary {
-  background: linear-gradient(135deg, #d59a91 0%, var(--rose-deep) 100%);
-  color: #fff;
-  box-shadow: 0 14px 30px -14px rgba(168, 98, 92, 0.75);
+/* 포인터를 따라 움직이는 빛 반사 (--mx/--my: effects.js) */
+.btn::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(140px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.45), transparent 65%);
+  opacity: 0;
+  transition: opacity .4s var(--ease);
+  pointer-events: none;
+  z-index: -1;
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 36px -14px rgba(168, 98, 92, 0.85); }
+.btn:hover::after { opacity: 1; }
+.btn-primary {
+  background: linear-gradient(135deg, #e2aaa0 0%, #c98780 45%, var(--rose-deep) 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+  text-shadow: 0 1px 1px rgba(110, 45, 40, 0.25);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -4px 10px rgba(110, 45, 40, 0.28),
+    0 14px 30px -14px rgba(168, 98, 92, 0.75);
+}
+/* 윗면의 유리 광택 */
+.btn-primary::before,
+.tab-indicator::before {
+  content: "";
+  position: absolute; left: 6%; right: 6%; top: 2px; height: 48%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  pointer-events: none;
+  z-index: -1;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -4px 10px rgba(110, 45, 40, 0.28),
+    0 20px 36px -14px rgba(168, 98, 92, 0.85);
+}
 .btn-primary:disabled {
   cursor: not-allowed; transform: none;
-  background: #dcc8c2; box-shadow: none;
+  background: #dcc8c2; box-shadow: none; text-shadow: none;
 }
-.btn-ghost {
-  background: rgba(255, 255, 255, 0.6);
-  border-color: var(--gold-soft);
-  color: var(--ink);
-  backdrop-filter: blur(6px);
-}
-.btn-ghost:hover { background: #fff; border-color: var(--gold); }
+.btn-primary:disabled::before { opacity: 0.4; }
+.btn-ghost { color: var(--ink); }
+.btn-ghost:hover { transform: translateY(-2px); }
 .btn-block { width: 100%; }
 
 /* =========================================================
@@ -165,17 +197,18 @@ strong { font-weight: 600; color: var(--rose-deep); }
 .site-header {
   position: fixed; inset: 0 0 auto 0;
   z-index: 50;
-  transition: background .4s var(--ease), box-shadow .4s var(--ease), backdrop-filter .4s;
+  transition: padding .45s var(--ease);
 }
-.site-header.scrolled {
-  background: rgba(251, 247, 242, 0.86);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 1px 0 var(--line);
-}
+.site-header.scrolled { padding-top: 12px; }
 .header-inner {
   display: flex; align-items: center; justify-content: space-between;
   height: 76px;
+  border-radius: 999px;
+  transition: height .45s var(--ease), width .45s var(--ease), background .45s var(--ease), box-shadow .45s var(--ease);
+}
+.site-header.scrolled .header-inner {
+  width: min(1180px, calc(100% - 24px));
+  height: 62px;
 }
 .logo {
   display: inline-flex; align-items: center; gap: 10px;
@@ -185,6 +218,8 @@ strong { font-weight: 600; color: var(--rose-deep); }
   letter-spacing: 0.22em;
   color: var(--ink);
 }
+.logo-word { display: inline-block; }
+.logo-word.is-liquid { filter: url(#liquid-logo); }
 .logo-mark svg {
   width: 26px; height: 26px;
   fill: none; stroke: var(--gold); stroke-width: 1.4;
@@ -375,6 +410,44 @@ strong { font-weight: 600; color: var(--rose-deep); }
 .orb-dot.d1 { top: 16%; right: 18%; animation: float 6s ease-in-out infinite; }
 .orb-dot.d2 { bottom: 20%; left: 12%; width: 7px; height: 7px; background: var(--rose); box-shadow: 0 0 0 5px rgba(201, 135, 128, 0.18); animation: float 7s ease-in-out -2s infinite; }
 
+/* 3D sphere (effects.js) — 준비되면 SVG 지구본과 자리를 바꿈 */
+.orb-canvas {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s var(--ease);
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+.orb-canvas::before {
+  content: "";
+  position: absolute; inset: 24%;
+  border-radius: 50%;
+  box-shadow: 0 46px 90px -26px rgba(168, 98, 92, 0.5);
+  pointer-events: none;
+}
+.orb-canvas:active { cursor: grabbing; }
+.orb-canvas canvas { position: relative; display: block; width: 100% !important; height: 100% !important; }
+.orb::before, .orb-globe, .orb-dot { transition: opacity .9s var(--ease); }
+.orb.is-3d .orb-canvas { opacity: 1; }
+.orb.is-3d::before, .orb.is-3d .orb-globe, .orb.is-3d .orb-dot { opacity: 0; }
+.orb-text, .orb-globe, .orb-center, .orb-dot { pointer-events: none; }
+.orb { -webkit-user-select: none; user-select: none; }
+.orb.is-3d .orb-center { text-shadow: 0 0 28px rgba(255, 255, 255, 0.95), 0 0 8px rgba(255, 255, 255, 0.9); }
+.hero-visual { flex-direction: column; align-items: center; }
+.orb-hint {
+  margin-top: 4px;
+  text-align: center;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--gold-deep);
+  opacity: 0;
+  transition: opacity .8s var(--ease) .8s;
+}
+.orb-hint:empty { display: none; }
+.hero-visual:has(.orb.is-3d) .orb-hint { opacity: 0.85; }
+.hero-visual:has(.orb.is-touched) .orb-hint { opacity: 0; transition-delay: 0s; }
+
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes meridian {
   0%, 100% { transform: scaleX(1); }
@@ -504,6 +577,10 @@ strong { font-weight: 600; color: var(--rose-deep); }
   position: relative;
   overflow: hidden;
 }
+.quote-band::before,
+.quote-band::after,
+.quote-band > .container { z-index: 1; }
+.quote-band > .container { position: relative; }
 .quote-band::before,
 .quote-band::after {
   content: "";
@@ -676,9 +753,13 @@ strong { font-weight: 600; color: var(--rose-deep); }
   position: absolute; top: 6px; bottom: 6px; left: 6px;
   width: calc(50% - 6px);
   border-radius: 999px;
-  background: linear-gradient(135deg, #d59a91 0%, var(--rose-deep) 100%);
-  box-shadow: 0 8px 20px -10px rgba(168, 98, 92, 0.8);
-  transition: transform .45s var(--ease);
+  background: linear-gradient(135deg, #e2aaa0 0%, #c98780 45%, var(--rose-deep) 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -3px 8px rgba(110, 45, 40, 0.25),
+    0 8px 20px -10px rgba(168, 98, 92, 0.8);
+  transition: transform .55s cubic-bezier(0.34, 1.4, 0.5, 1);
+  isolation: isolate;
 }
 .tabs[data-active="1"] .tab-indicator { transform: translateX(100%); }
 
@@ -1072,6 +1153,81 @@ fieldset.field legend {
 }
 .policy th { background: var(--cream); color: var(--ink); font-weight: 600; }
 .policy-date { margin-top: 44px; font-weight: 600; color: var(--ink) !important; }
+
+/* =========================================================
+   Shader gradient · Liquid glass · Intro (effects.js)
+   ========================================================= */
+.shader-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1.6s var(--ease);
+  pointer-events: none;
+}
+.shader-bg.is-ready { opacity: 1; }
+
+/* Liquid glass: 반투명 + 흐림 + 가장자리 빛 하이라이트.
+   크롬 계열에서는 effects.js가 --lg-filter에 SVG 굴절 필터를 추가합니다. */
+.lg,
+.site-header.scrolled .header-inner {
+  background: rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  backdrop-filter: var(--lg-filter, blur(14px) saturate(180%));
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.45),
+    inset 1px 0 1px rgba(255, 255, 255, 0.35),
+    inset -1px 0 1px rgba(255, 255, 255, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 -12px 24px -16px rgba(201, 135, 128, 0.35),
+    0 14px 34px -18px rgba(122, 76, 64, 0.38);
+}
+.lg-refract .lg,
+.lg-refract .site-header.scrolled .header-inner { background: rgba(255, 255, 255, 0.16); }
+.btn-ghost.lg:hover { background: rgba(255, 255, 255, 0.42); }
+.tabs.lg { background: rgba(255, 255, 255, 0.34); }
+
+.fx-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+
+/* Intro — 금빛 액체가 모여 WEDNESS 글자가 되는 연출 (세션당 1회) */
+.intro { display: none; }
+.intro-play .intro {
+  position: fixed; inset: 0; z-index: 200;
+  display: grid; place-content: center; justify-items: center; gap: 4px;
+  background:
+    radial-gradient(55% 45% at 50% 46%, #fff 0%, rgba(255, 255, 255, 0) 70%),
+    radial-gradient(90% 80% at 80% 10%, var(--blush-100), transparent 60%),
+    radial-gradient(80% 70% at 10% 95%, #f1e5d1, transparent 60%),
+    var(--ivory);
+  animation: intro-out .9s var(--ease) 2.15s forwards;
+}
+.intro-logo { width: min(640px, 84vw); height: auto; overflow: visible; }
+.intro-logo text {
+  font-family: var(--serif-en);
+  font-weight: 500;
+  font-size: 150px;
+  letter-spacing: 30px;
+}
+.intro-logo .crisp { opacity: 0; animation: intro-fade .6s ease 1.2s forwards; }
+.intro-logo .liquid { animation: intro-fade-out .6s ease 1.3s forwards; }
+.intro-tag {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: clamp(1rem, 2.4vw, 1.3rem);
+  letter-spacing: 0.14em;
+  color: var(--gold-deep);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: intro-rise .9s var(--ease) 1.15s forwards;
+}
+.intro-play .intro.is-skipping { animation: intro-skip .45s ease forwards; }
+@keyframes intro-out { to { opacity: 0; visibility: hidden; transform: scale(1.03); } }
+@keyframes intro-skip { to { opacity: 0; visibility: hidden; } }
+@keyframes intro-fade { to { opacity: 1; } }
+@keyframes intro-fade-out { to { opacity: 0; } }
+@keyframes intro-rise { to { opacity: 1; transform: none; } }
 
 /* =========================================================
    Reveal on scroll

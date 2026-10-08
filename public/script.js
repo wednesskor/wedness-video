@@ -34,12 +34,20 @@ const CONTACT_ENDPOINT = '/api/contact';
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-    // Stagger siblings inside grids
-    revealTargets.forEach((el) => {
+    // Stagger siblings inside grids. 인트로 재생 중에는 히어로 문구가 인트로가 걷힐 때 나타나도록 지연
+    const introDelay = document.documentElement.classList.contains('intro-play') ? 1900 : 0;
+    const stagger = (el, extra) => {
       const siblings = el.parentElement.querySelectorAll(':scope > .reveal');
       const idx = Array.prototype.indexOf.call(siblings, el);
-      if (idx > 0) el.style.transitionDelay = Math.min(idx * 90, 450) + 'ms';
+      const delay = extra + Math.min(idx * 90, 450);
+      el.style.transitionDelay = delay ? delay + 'ms' : '';
+    };
+    revealTargets.forEach((el) => {
+      stagger(el, el.closest('.hero') ? introDelay : 0);
       io.observe(el);
+    });
+    document.addEventListener('intro:skip', () => {
+      document.querySelectorAll('.hero .reveal').forEach((el) => stagger(el, 200));
     });
   } else {
     revealTargets.forEach((el) => el.classList.add('in'));
