@@ -137,6 +137,8 @@ float gridLines(vec3 p, float px) {
 
 const INNER_FRAG = `
 uniform float uTime;
+uniform sampler2D uPhoto;
+uniform float uPhotoMix;
 varying vec3 vPos;
 ${NOISE3}
 ${GRID}
@@ -150,9 +152,22 @@ void main() {
   float horizon = exp(-pow(dir.y * 3.0, 2.0));
   col += vec3(0.9, 0.64, 0.42) * horizon * 0.16;
   col += vec3(1.0, 0.86, 0.76) * pow(max(dir.y, 0.0), 7.0) * 0.22;
+  // 예식 사진: 첫 시선의 오른쪽(문구가 없는 쪽)에 가로 120° 곡면 파노라마로 펼침
+  float lon = atan(dir.z, dir.x);
+  float lat = asin(clamp(dir.y, -1.0, 1.0));
+  vec2 puv = vec2((lon - (-PI * 0.5 + 0.34)) / (PI * 0.6667) + 0.5, (lat - 0.24) / (PI * 0.3333) + 0.5);
+  if (uPhotoMix > 0.0 && puv.x > 0.0 && puv.x < 1.0 && puv.y > 0.0 && puv.y < 1.0) {
+    vec3 photo = texture2D(uPhoto, puv).rgb;
+    // 가장자리는 어둠 속으로 부드럽게, 은은한 일렁임으로 '기억' 같은 느낌
+    float edge = smoothstep(0.0, 0.16, puv.x) * smoothstep(1.0, 0.84, puv.x)
+               * smoothstep(0.0, 0.18, puv.y) * smoothstep(1.0, 0.82, puv.y);
+    float breathe = 0.9 + 0.1 * snoise(dir * 2.0 + t * 0.05);
+    photo = mix(photo, photo * vec3(1.04, 0.95, 0.88), 0.3) * 0.95 * breathe;
+    col = mix(col, photo, edge * uPhotoMix);
+  }
   float g = gridLines(vPos, 1.0);
   vec3 gold = vec3(0.92, 0.78, 0.55);
-  col += gold * g * (0.22 + 0.38 * horizon);
+  col += gold * g * (0.18 + 0.32 * horizon);
   // 반짝임
   float sp = snoise(dir * 60.0 + t * 0.4);
   col += vec3(1.0, 0.9, 0.78) * smoothstep(0.82, 1.0, sp) * 0.5;
@@ -279,7 +294,17 @@ async function heroScene(stage) {
   scene.add(world);
 
   // Sphere: inner (360° room) + outer (pearl shell)
-  const uniforms = { uTime: { value: 0 }, uReveal: { value: 0 }, uCam: { value: new THREE.Vector3() } };
+  const uniforms = {
+    uTime: { value: 0 }, uReveal: { value: 0 }, uCam: { value: new THREE.Vector3() },
+    uPhoto: { value: null }, uPhotoMix: { value: 0 },
+  };
+  // 구체 안쪽 벽의 예식 사진 (불러오면 서서히 나타남)
+  let photoTarget = 0;
+  new THREE.TextureLoader().load('sphere-photo.jpg', (tex) => {
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    uniforms.uPhoto.value = tex;
+    photoTarget = 1;
+  });
   const seg = coarse ? [96, 64] : [160, 112];
   const geo = new THREE.SphereGeometry(1, seg[0], seg[1]);
   const inner = new THREE.Mesh(geo, new THREE.ShaderMaterial({
@@ -431,6 +456,7 @@ async function heroScene(stage) {
     prev = now;
     if (!reduceMotion) t += dt;
     uniforms.uTime.value = t;
+    uniforms.uPhotoMix.value += (photoTarget - uniforms.uPhotoMix.value) * Math.min(1, dt * 1.5);
 
     const target = window.WEDNESS?.heroProgress || 0;
     sp += (target - sp) * Math.min(1, dt * 4);
