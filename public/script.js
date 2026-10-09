@@ -4,50 +4,106 @@
 // (same shape as the current wedness.co.kr /api/contact route)
 const CONTACT_ENDPOINT = '/api/contact';
 
+// effects.js(3D 장면)와 공유하는 상태
+window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
+
 (function () {
-  // Header background on scroll
+  const root = document.documentElement;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Header: 스크롤하면 떠 있는 유리 알약으로
   const header = document.querySelector('.site-header');
-  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+  const lightSections = document.querySelectorAll('.is-light');
+  const onScroll = () => {
+    header.classList.toggle('scrolled', window.scrollY > 24);
+    // 밝은 섹션 위를 지날 때는 헤더도 밝은 유리로
+    const y = header.offsetHeight / 2 + 12;
+    const onLight = Array.prototype.some.call(lightSections, (s) => {
+      const r = s.getBoundingClientRect();
+      return r.top <= y && r.bottom >= y;
+    });
+    header.classList.toggle('on-light', onLight);
+  };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // Mobile nav
+  // Hero: 스크롤 진행도(--p 0→1). 구체 안 → 밖으로 빠져나오는 연출에 사용
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const r = hero.getBoundingClientRect();
+      const span = Math.max(1, r.height - window.innerHeight);
+      const p = Math.min(1, Math.max(0, -r.top / span));
+      window.WEDNESS.heroProgress = p;
+      hero.style.setProperty('--p', p.toFixed(4));
+      hero.classList.toggle('is-out', p > 0.36);
+    };
+    const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    update();
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+  }
+
+  // Mobile nav (전체 화면 메뉴)
   const toggle = document.querySelector('.nav-toggle');
   const list = document.getElementById('nav-list');
   const setNav = (open) => {
     toggle.setAttribute('aria-expanded', String(open));
     toggle.querySelector('.sr-only').textContent = open ? '메뉴 닫기' : '메뉴 열기';
     list.classList.toggle('open', open);
+    header.classList.toggle('menu-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
   };
   toggle.addEventListener('click', () => setNav(toggle.getAttribute('aria-expanded') !== 'true'));
   list.addEventListener('click', (e) => { if (e.target.closest('a')) setNav(false); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setNav(false); });
+  matchMedia('(min-width: 901px)').addEventListener('change', (e) => { if (e.matches) setNav(false); });
 
-  // Reveal on scroll
+  // Chart count-up
+  const countUp = (card) => {
+    card.querySelectorAll('[data-count]').forEach((el) => {
+      const target = parseFloat(el.dataset.count);
+      if (reduceMotion || !isFinite(target)) return;
+      const start = performance.now();
+      const dur = 1800;
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 4);
+        el.textContent = (target * eased).toFixed(1);
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+
+  // Reveal on scroll. 인트로 재생 중에는 히어로 문구가 인트로가 걷힐 때 나타나도록 지연
   const revealTargets = document.querySelectorAll('.reveal');
+  const introDelay = root.classList.contains('intro-play') ? 2000 : 0;
+  const stagger = (el, extra) => {
+    const siblings = el.parentElement.querySelectorAll(':scope > .reveal');
+    const idx = Array.prototype.indexOf.call(siblings, el);
+    const delay = extra + Math.min(idx * 110, 550);
+    el.style.transitionDelay = delay ? delay + 'ms' : '';
+    el.style.setProperty('--d', delay + 'ms');
+  };
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('in');
+        if (entry.target.classList.contains('chart-card')) countUp(entry.target);
         io.unobserve(entry.target);
       });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-    // Stagger siblings inside grids. 인트로 재생 중에는 히어로 문구가 인트로가 걷힐 때 나타나도록 지연
-    const introDelay = document.documentElement.classList.contains('intro-play') ? 1900 : 0;
-    const stagger = (el, extra) => {
-      const siblings = el.parentElement.querySelectorAll(':scope > .reveal');
-      const idx = Array.prototype.indexOf.call(siblings, el);
-      const delay = extra + Math.min(idx * 90, 450);
-      el.style.transitionDelay = delay ? delay + 'ms' : '';
-    };
     revealTargets.forEach((el) => {
       stagger(el, el.closest('.hero') ? introDelay : 0);
       io.observe(el);
     });
     document.addEventListener('intro:skip', () => {
-      document.querySelectorAll('.hero .reveal').forEach((el) => stagger(el, 200));
+      document.querySelectorAll('.hero .reveal').forEach((el) => stagger(el, 150));
     });
   } else {
     revealTargets.forEach((el) => el.classList.add('in'));
