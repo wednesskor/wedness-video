@@ -703,10 +703,29 @@ function cursor() {
     c.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
     raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.1 ? requestAnimationFrame(loop) : 0;
   };
+  // 다른 사이트를 끼워 넣은 창(QR 나무 iframe) 안에서는 마우스 위치를 받을 수 없으므로,
+  // 창 가장자리에 다가가면 동그라미를 숨기고, 충분히 벗어나면 현재 위치에서 바로 다시 나타나게 함
+  const frames = document.querySelectorAll('.qr-frame');
+  const MARGIN = 28;
+  let inFrame = false;
+  const nearFrame = (px, py) => Array.prototype.some.call(frames, (f) => {
+    const r = f.getBoundingClientRect();
+    return px > r.left - MARGIN && px < r.right + MARGIN && py > r.top - MARGIN && py < r.bottom + MARGIN;
+  });
   addEventListener('pointermove', (e) => {
+    const t = e.target;
+    if (nearFrame(e.clientX, e.clientY)) {
+      inFrame = true;
+      c.classList.remove('is-on');
+      return;
+    }
+    if (inFrame) {
+      inFrame = false;
+      x = cx = e.clientX; y = cy = e.clientY;
+      c.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+    }
     x = e.clientX; y = e.clientY;
     c.classList.add('is-on');
-    const t = e.target;
     c.classList.toggle('is-hover', !!(t.closest && t.closest('a, button, label, summary, [role="tab"], .hero-stage')));
     c.classList.toggle('is-light', !!(t.closest && t.closest('.is-light')));
     if (!raf) raf = requestAnimationFrame(loop);
