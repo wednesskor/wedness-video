@@ -9,6 +9,10 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
 
 (function () {
   const root = document.documentElement;
+  // 한/영 문구 (i18n.js). 없으면 한국어 기본값
+  const I18N = window.WEDNESS_I18N || { lang: 'ko', t: (k) => null };
+  const tr = (key, ko) => I18N.t(key) || ko;
+  const isEn = () => I18N.lang === 'en';
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Header: 스크롤하면 떠 있는 유리 알약으로
@@ -51,7 +55,7 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
   const list = document.getElementById('nav-list');
   const setNav = (open) => {
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.querySelector('.sr-only').textContent = open ? '메뉴 닫기' : '메뉴 열기';
+    toggle.querySelector('.sr-only').textContent = open ? tr('ui.menuClose', '메뉴 닫기') : tr('ui.menuOpen', '메뉴 열기');
     list.classList.toggle('open', open);
     header.classList.toggle('menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
@@ -60,11 +64,12 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
   list.addEventListener('click', (e) => { if (e.target.closest('a')) setNav(false); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setNav(false); });
   matchMedia('(min-width: 901px)').addEventListener('change', (e) => { if (e.matches) setNav(false); });
+  document.addEventListener('lang:change', () => setNav(toggle.getAttribute('aria-expanded') === 'true'));
 
   // Chart count-up
   const countUp = (card) => {
     card.querySelectorAll('[data-count]').forEach((el) => {
-      const target = parseFloat(el.dataset.count);
+      const target = parseFloat(isEn() && el.dataset.countEn ? el.dataset.countEn : el.dataset.count);
       if (reduceMotion || !isFinite(target)) return;
       const start = performance.now();
       const dur = 1800;
@@ -150,9 +155,12 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
     const q = btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     const iframe = document.createElement('iframe');
     iframe.src = 'https://tree.icqr.com/?q=' + q;
-    iframe.title = 'QR 코드 나무 — 나무를 누르면 QR 코드가 나타납니다';
+    iframe.title = tr('ui.qrTitle', 'QR 코드 나무 — 나무를 누르면 QR 코드가 나타납니다');
     iframe.loading = 'lazy';
     el.appendChild(iframe);
+  });
+  document.addEventListener('lang:change', () => {
+    document.querySelectorAll('.qr-frame iframe').forEach((f) => { f.title = tr('ui.qrTitle', f.title); });
   });
 
   // Contact form
@@ -175,10 +183,15 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
     const type = val('inquiryType');
     form.querySelectorAll('[data-for]').forEach((el) => { el.hidden = el.dataset.for !== type; });
     hall.required = type === 'hall';
-    hall.placeholder = type === 'hall' ? '' : '미정이면 비워두세요';
+    hall.placeholder = type === 'hall' ? '' : tr('ui.venuePh', '미정이면 비워두세요');
     submit.disabled = !isComplete();
   };
   applyType();
+  document.addEventListener('lang:change', () => {
+    applyType();
+    if (!submit.dataset.busy) submit.textContent = tr('ui.send', '문의 보내기');
+  });
+  submit.textContent = tr('ui.send', '문의 보내기');
 
   form.addEventListener('input', () => { submit.disabled = !isComplete(); });
   form.addEventListener('change', (e) => {
@@ -196,6 +209,7 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
       '[문의 유형] ' + TYPE_LABELS[type],
       type === 'couple' ? '[예식 예정일] ' + (val('weddingDate') || '미정') : null,
       '[개인정보 수집·이용 동의] 동의 (' + new Date().toLocaleString('ko-KR') + ')',
+      isEn() ? '[언어] 영어 페이지에서 접수 — 영어로 답변 필요' : null,
     ].filter(Boolean).join('\n');
     const payload = {
       name: val('name'),
@@ -205,7 +219,8 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
       message: header + '\n\n' + val('message'),
     };
     submit.disabled = true;
-    submit.textContent = '전송 중...';
+    submit.dataset.busy = '1';
+    submit.textContent = tr('ui.sending', '전송 중...');
     setStatus(null, '');
 
     try {
@@ -216,16 +231,17 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
-        setStatus('success', '문의가 성공적으로 전송되었습니다. 담당자가 곧 연락드리겠습니다.');
+        setStatus('success', tr('ui.ok', '문의가 성공적으로 전송되었습니다. 담당자가 곧 연락드리겠습니다.'));
         form.reset();
         applyType();
       } else {
-        setStatus('error', data.error || '전송 중 오류가 발생했습니다.');
+        setStatus('error', isEn() ? tr('ui.err', '') : (data.error || '전송 중 오류가 발생했습니다.'));
       }
     } catch (err) {
-      setStatus('error', '네트워크 오류가 발생했습니다.');
+      setStatus('error', tr('ui.net', '네트워크 오류가 발생했습니다.'));
     } finally {
-      submit.textContent = '문의 보내기';
+      delete submit.dataset.busy;
+      submit.textContent = tr('ui.send', '문의 보내기');
       submit.disabled = !isComplete();
     }
   });

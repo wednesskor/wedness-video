@@ -391,6 +391,71 @@ strong { font-weight: 500; color: var(--gold); }
   .nav .nav-cta { font-family: var(--sans); font-size: 1.05rem; height: 56px; padding: 0 30px; letter-spacing: 0; }
 }
 
+/* ---------- Language switch (KO / EN) ---------- */
+.logo { margin-right: auto; }
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 2px;
+  margin-left: 16px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+}
+.lang-switch button {
+  height: 30px; min-width: 38px;
+  padding: 0 10px;
+  border: 0; border-radius: 999px;
+  background: transparent;
+  color: var(--text-dim);
+  font: 600 0.72rem/1 var(--sans);
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background .35s var(--ease), color .35s var(--ease);
+}
+.lang-switch button:hover { color: var(--text); }
+.lang-switch button[aria-pressed="true"] { background: var(--gold); color: var(--noir); }
+.site-header.on-light .lang-switch button[aria-pressed="true"] { color: #fff; }
+@media (max-width: 900px) {
+  .lang-switch { margin-left: 0; margin-right: 6px; order: 1; }
+  .nav { order: 2; }
+}
+
+/* 언어 전환 시 본문이 살짝 사라졌다 나타남 */
+main, .site-footer { transition: opacity .18s var(--ease); }
+.lang-switching main, .lang-switching .site-footer { opacity: 0; }
+/* 영어 방문자: 번역이 적용되기 전 한국어가 번쩍이지 않도록 (최대 1.5초) */
+.i18n-pending main, .i18n-pending .site-footer { opacity: 0; }
+
+/* 영어 타이포그래피: 제목은 Bodoni, 단어 단위 줄바꿈 */
+html[lang="en"] body { word-break: normal; letter-spacing: 0; }
+html[lang="en"] .hero-title,
+html[lang="en"] .sec-title {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+html[lang="en"] .hero-title { font-size: clamp(2.3rem, 4.9vw, 4.7rem); line-height: 1.08; }
+html[lang="en"] .hero-title em { font-style: italic; }
+html[lang="en"] .hero-sub { font-size: clamp(0.7rem, 0.9vw, 0.8rem); letter-spacing: 0.26em; text-transform: uppercase; }
+html[lang="en"] .sec-title { line-height: 1.12; }
+html[lang="en"] .sec-title em { font-style: italic; }
+html[lang="en"] .feature h3,
+html[lang="en"] .benefit h3,
+html[lang="en"] .step h3,
+html[lang="en"] .qr-card h3,
+html[lang="en"] .chart-card figcaption,
+html[lang="en"] .footer-tagline,
+html[lang="en"] .quote {
+  font-family: var(--display);
+  letter-spacing: 0;
+}
+html[lang="en"] .feature h3, html[lang="en"] .benefit h3, html[lang="en"] .step h3 { font-weight: 500; }
+html[lang="en"] .quote { font-style: italic; }
+html[lang="en"] .nav .nav-cta { letter-spacing: 0.02em; }
+@media (max-width: 760px) {
+  html[lang="en"] .hero-title { font-size: clamp(1.9rem, 8.4vw, 2.6rem); line-height: 1.12; }
+  html[lang="en"] .sec-title { font-size: clamp(1.9rem, 8.2vw, 2.6rem); }
+}
+
 /* 밝은 섹션 위의 헤더 */
 .site-header.on-light {
   --text: var(--ink);
