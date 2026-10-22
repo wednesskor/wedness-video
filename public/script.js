@@ -65,6 +65,7 @@ window.WEDNESS = window.WEDNESS || { heroProgress: 0 };
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setNav(false); });
   matchMedia('(min-width: 901px)').addEventListener('change', (e) => { if (e.matches) setNav(false); });
   document.addEventListener('lang:change', () => setNav(toggle.getAttribute('aria-expanded') === 'true'));
+  toggle.querySelector('.sr-only').textContent = tr('ui.menuOpen', '메뉴 열기');
 
   // Chart count-up
   const countUp = (card) => {
